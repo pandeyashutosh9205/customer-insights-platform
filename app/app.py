@@ -1,10 +1,11 @@
 import streamlit as st
 st.set_page_config(page_title="Customer Insights Platform",layout="wide")
 
-st.sidebar.title("Navigation")
-page=st.sidebar.radio("Go to",["Insights Dashboard", "Churn Risk Checker", "Sales Forecast", "Review Analysis"])
+st.title("Customer Insights Platform")
 
-if page == "Insights Dashboard":
+tab1, tab2, tab3, tab4 = st.tabs(["Insights", "Churn Risk", "Sales Forecast", "Review Analysis"])
+
+with tab1:
     st.title("Business Insights Dashboard")
 
     import pandas as pd
@@ -16,8 +17,9 @@ if page == "Insights Dashboard":
     fig, ax = plt.subplots(figsize=(12,4))
     ax.plot(daily_revenue.index, daily_revenue.iloc[:,0])
     st.pyplot(fig)
+    ...
 
-elif page == "Churn Risk Checker":
+with tab2:
     st.title("Customer Churn Risk Checker")
 
     import joblib
@@ -39,8 +41,9 @@ elif page == "Churn Risk Checker":
             st.error("High churn risk — consider a retention offer.")
         else:
             st.success("Low churn risk.")
+    ...
 
-elif page == "Sales Forecast":
+with tab3:
     st.title("Sales Forecast")
 
     import joblib
@@ -63,8 +66,9 @@ elif page == "Sales Forecast":
     st.metric("Predicted Next-Day Revenue", f"R$ {prediction[0][0]:,.2f}")
 
     st.line_chart(daily_revenue.iloc[-60:])
+    ...
 
-elif page == "Review Analysis":
+with tab4:
     st.title("Review Sentiment & Ticket Classifier")
 
     import joblib
@@ -91,3 +95,4 @@ elif page == "Review Analysis":
 
         ticket_pred = ticket_model.predict(vectorized)[0]
         st.write(f"Likely Category: {ticket_pred}")
+    ...
